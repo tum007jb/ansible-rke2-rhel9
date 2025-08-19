@@ -1,0 +1,38 @@
+- name: Worker | Install RKE2 agent
+  become: true
+  ansible.builtin.shell: "curl -sfL https://get.rke2.io | INSTALL_RKE2_TYPE=agent sh -"
+  args:
+    creates: /usr/local/bin/rke2
+
+- name: Worker | Create RKE2 config directory
+  become: true
+  ansible.builtin.file:
+    path: /etc/rancher/rke2
+    state: directory
+    mode: '0755'
+
+- name: Worker | Template RKE2 config file
+  become: true
+  ansible.builtin.template:
+    src: config.yaml.j2
+    dest: /etc/rancher/rke2/config.yaml
+    mode: '0644'
+  notify: Restart rke2-agent
+
+- name: Worker | Enable and start rke2-agent service
+  become: true
+  ansible.builtin.systemd:
+    name: rke2-agent.service
+    state: started
+    enabled: true
+
+# Handler
+- name: Flush handlers
+  meta: flush_handlers
+
+- name: Worker | Define handler to restart rke2-agent
+  become: true
+  ansible.builtin.systemd:
+    name: rke2-agent.service
+    state: restarted
+  listen: "Restart rke2-agent"

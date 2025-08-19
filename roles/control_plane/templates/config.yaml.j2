@@ -1,0 +1,12 @@
+# This is a Jinja2 template
+# For the first node, it sets the tls-san.
+# For other nodes, it sets the server URL and token.
+cni: calico # Example: specify CNI
+write-kubeconfig-mode: "0644"
+tls-san:
+  - {{ rke2_tls_san }}
+
+{% if inventory_hostname in groups['rke2_other_control_planes'] %}
+server: https://{{ rke2_server_url }}:9345
+token: {{ hostvars[groups['rke2_first_control_plane'][0]]['cluster_join_token'] }}
+{% endif %}

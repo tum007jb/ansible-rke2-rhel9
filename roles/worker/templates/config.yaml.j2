@@ -1,0 +1,3 @@
+# This template is for worker nodes. It always needs the server URL and token.
+server: https://{{ rke2_server_url }}:9345
+token: {{ hostvars[groups['rke2_first_control_plane'][0]]['cluster_join_token'] }}
