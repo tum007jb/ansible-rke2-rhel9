@@ -4,32 +4,32 @@
   roles:
     - role: common
 
-# - name: Install first RKE2 control plane node
-#   hosts: rke2_first_control_plane
-#   roles:
-#     - role: control_plane
+- name: Install first RKE2 control plane node
+  hosts: rke2_first_control_plane
+  roles:
+    - role: control_plane
 
-# - name: Fetch the cluster join token from the first control plane
-#   hosts: rke2_first_control_plane
-#   tasks:
-#     - name: Wait for node token to be created
-#       become: true
-#       ansible.builtin.wait_for:
-#         path: /var/lib/rancher/rke2/server/node-token
-#         timeout: 120
-#     - name: Read the node token
-#       become: true
-#       ansible.builtin.slurp:
-#         src: /var/lib/rancher/rke2/server/node-token
-#       register: rke2_token_b64
-#     - name: Store the token as a fact for other hosts
-#       ansible.builtin.set_fact:
-#         cluster_join_token: "{{ rke2_token_b64.content | b64decode | trim }}"
+- name: Fetch the cluster join token from the first control plane
+  hosts: rke2_first_control_plane
+  tasks:
+    - name: Wait for node token to be created
+      become: true
+      ansible.builtin.wait_for:
+        path: /var/lib/rancher/rke2/server/node-token
+        timeout: 120
+    - name: Read the node token
+      become: true
+      ansible.builtin.slurp:
+        src: /var/lib/rancher/rke2/server/node-token
+      register: rke2_token_b64
+    - name: Store the token as a fact for other hosts
+      ansible.builtin.set_fact:
+        cluster_join_token: "{{ rke2_token_b64.content | b64decode | trim }}"
 
-# - name: Install other RKE2 control plane nodes
-#   hosts: rke2_other_control_planes
-#   roles:
-#     - role: control_plane
+- name: Install other RKE2 control plane nodes
+  hosts: rke2_other_control_planes
+  roles:
+    - role: control_plane
 
 # - name: Install RKE2 worker nodes
 #   hosts: rke2_worker
