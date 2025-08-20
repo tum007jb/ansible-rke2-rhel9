@@ -8,7 +8,7 @@
   hosts: rke2_first_control_plane
   roles:
     - role: control_plane
-#test
+
 - name: Fetch the cluster join token from the first control plane
   hosts: rke2_first_control_plane
   tasks:
