@@ -25,14 +25,3 @@
     name: rke2-server.service
     state: started
     enabled: true
-
-# Handler to restart service on config change
-- name: Flush handlers
-  meta: flush_handlers
-
-- name: ControlPlane | Define handler to restart rke2-server
-  become: true
-  ansible.builtin.systemd:
-    name: rke2-server.service
-    state: restarted
-  listen: "Restart rke2-server"
