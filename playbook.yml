@@ -31,21 +31,21 @@
   roles:
     - role: control_plane
 
-# - name: Install RKE2 worker nodes
-#   hosts: rke2_worker
-#   roles:
-#     - role: worker
+- name: Install RKE2 worker nodes
+  hosts: rke2_worker
+  roles:
+    - role: worker
 
-# - name: Fetch kubeconfig file for local use
-#   hosts: rke2_first_control_plane
-#   tasks:
-#     - name: Fetch rke2.yaml kubeconfig
-#       become: true
-#       ansible.builtin.fetch:
-#         src: /etc/rancher/rke2/rke2.yaml
-#         dest: ./kubeconfig
-#         flat: yes
-#     - name: Inform user about kubeconfig
-#       ansible.builtin.debug:
-#         msg: "Kubeconfig file has been saved to ./kubeconfig. Use it with 'export KUBECONFIG=$(pwd)/kubeconfig'"
-#       run_once: true
+- name: Fetch kubeconfig file for local use
+  hosts: rke2_first_control_plane
+  tasks:
+    - name: Fetch rke2.yaml kubeconfig
+      become: true
+      ansible.builtin.fetch:
+        src: /etc/rancher/rke2/rke2.yaml
+        dest: ./kubeconfig
+        flat: yes
+    - name: Inform user about kubeconfig
+      ansible.builtin.debug:
+        msg: "Kubeconfig file has been saved to ./kubeconfig. Use it with 'export KUBECONFIG=$(pwd)/kubeconfig'"
+      run_once: true
