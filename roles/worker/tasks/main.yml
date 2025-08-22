@@ -17,7 +17,7 @@
     src: config.yaml.j2
     dest: /etc/rancher/rke2/config.yaml
     mode: '0644'
-  notify: 
+  notify: Restart rke2-agent"
 
 - name: Worker | Enable and start rke2-agent service
   become: true
@@ -25,14 +25,3 @@
     name: rke2-agent.service
     state: started
     enabled: true
-
-# Handler
-- name: Flush handlers
-  meta: flush_handlers
-
-- name: Worker | Define handler to restart rke2-agent
-  become: true
-  ansible.builtin.systemd:
-    name: rke2-agent.service
-    state: restarted
-  listen: "Restart rke2-agent"
