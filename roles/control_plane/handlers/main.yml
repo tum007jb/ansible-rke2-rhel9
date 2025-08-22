@@ -1,0 +1,6 @@
+- name: Restart rke2-server service
+  become: true
+  ansible.builtin.systemd:
+    name: rke2-server.service
+    state: restarted
+  listen: "Restart rke2-server" # <-- 'listen' ใช้ที่นี่ได้

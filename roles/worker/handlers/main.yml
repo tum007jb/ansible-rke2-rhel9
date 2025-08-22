@@ -1,0 +1,6 @@
+- name: Restart rke2-agent service
+  become: true
+  ansible.builtin.systemd:
+    name: rke2-agent.service
+    state: restarted
+  listen: "Restart rke2-agent" # <--- 'listen' ถูกต้องเมื่ออยู่ในไฟล์ handler
