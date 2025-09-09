@@ -14,7 +14,6 @@ provider "vsphere" {
   allow_unverified_ssl = true
 }
 
-# --- Datacenter ---
 data "vsphere_datacenter" "dc" {
   name = var.vsphere_datacenter
 }
@@ -24,35 +23,25 @@ data "vsphere_datastore" "datastore" {
   datacenter_id = data.vsphere_datacenter.dc.id
 }
 
-# --- Host เดี่ยว ---
+# ใช้ Host เดี่ยว
 data "vsphere_host" "host" {
   name          = var.vsphere_host
   datacenter_id = data.vsphere_datacenter.dc.id
 }
 
-# --- Network ---
 data "vsphere_network" "network" {
   name          = var.vsphere_network
   datacenter_id = data.vsphere_datacenter.dc.id
 }
 
-# --- Template ---
 data "vsphere_virtual_machine" "template" {
   name          = "DSO-RHEL9-RKE-template"
   datacenter_id = data.vsphere_datacenter.dc.id
 }
 
-# --- Folder ---
-data "vsphere_folder" "target_folder" {
-  path          = "Tum-VM/RKE"
-  type          = "vm"
-  datacenter_id = data.vsphere_datacenter.dc.id
-}
-
-# --- Resource สร้าง VM ---
 resource "vsphere_virtual_machine" "vm" {
   name             = var.vm_name
-  folder           = data.vsphere_folder.target_folder.path  # ใช้ path folder
+  folder           = "Tum-VM/RKE"  # <<< ใส่ path relative จาก datacenter 
   resource_pool_id = data.vsphere_host.host.resource_pool_id
   datastore_id     = data.vsphere_datastore.datastore.id
 
