@@ -14,7 +14,7 @@ provider "vsphere" {
   allow_unverified_ssl = true
 }
 
-# ดึงข้อมูลจาก vSphere
+# --- ดึงข้อมูลจาก vSphere ---
 data "vsphere_datacenter" "dc" {
   name = var.vsphere_datacenter
 }
@@ -24,8 +24,9 @@ data "vsphere_datastore" "datastore" {
   datacenter_id = data.vsphere_datacenter.dc.id
 }
 
-data "vsphere_compute_cluster" "cluster" {
-  name          = var.vsphere_cluster
+# เปลี่ยนมาใช้ Host
+data "vsphere_host" "host" {
+  name          = var.vsphere_host
   datacenter_id = data.vsphere_datacenter.dc.id
 }
 
@@ -39,14 +40,14 @@ data "vsphere_virtual_machine" "template" {
   datacenter_id = data.vsphere_datacenter.dc.id
 }
 
-# สร้าง VM โดย Clone จาก Template
+# --- สร้าง VM ---
 resource "vsphere_virtual_machine" "vm" {
   name             = var.vm_name
-  resource_pool_id = data.vsphere_compute_cluster.cluster.resource_pool_id
+  resource_pool_id = data.vsphere_host.host.resource_pool_id
   datastore_id     = data.vsphere_datastore.datastore.id
 
-  num_cpus = 4                  # Fixed 4 vCPU
-  memory   = 16384               # Fixed 16GB RAM (MB)
+  num_cpus = 4
+  memory   = 16384                          # MB
   guest_id = data.vsphere_virtual_machine.template.guest_id
   scsi_type = data.vsphere_virtual_machine.template.scsi_type
 
@@ -57,7 +58,7 @@ resource "vsphere_virtual_machine" "vm" {
 
   disk {
     label            = "disk0"
-    size             = 100                               # Fixed 100GB HDD
+    size             = 100
     eagerly_scrub    = data.vsphere_virtual_machine.template.disks.0.eagerly_scrub
     thin_provisioned = data.vsphere_virtual_machine.template.disks.0.thin_provisioned
   }
