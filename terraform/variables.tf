@@ -5,10 +5,7 @@ variable "vsphere_password" {
 variable "vsphere_server" {}
 variable "vsphere_datacenter" {}
 variable "vsphere_datastore" {}
-variable "vsphere_host" {        # เพิ่มตัวแปรนี้
-  description = "ESXi Host name"
-  type        = string
-}
+variable "vsphere_host" {}
 variable "vsphere_network" {}
 variable "vm_name" {}
 variable "vm_hostname" {}
