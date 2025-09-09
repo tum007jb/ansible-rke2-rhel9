@@ -7,7 +7,7 @@ vsphere_datastore   = "SESX1-DATA1"
 vsphere_host        = "192.168.117.141"
 vsphere_network     = "VLAN172"
 
-vm_name             = "master1"
+vm_name             = "DSO-RHEL9-RKE-CPM-01"
 vm_hostname         = "master1.rke.dso.local"
 vm_domain           = "rke.dso.local"
 
