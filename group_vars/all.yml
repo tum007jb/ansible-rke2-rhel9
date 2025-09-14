@@ -2,8 +2,8 @@
 
 # IP หรือ DNS ของเครื่อง Control Plane แรก หรือ Load Balancer
 # Ansible จะใช้ค่านี้สำหรับให้ Node อื่นๆ join เข้ามา
-rke2_server_url: api.rke.dso.local
+rke2_server_url: wkrke.rke.dso.local
 
 # SAN (Subject Alternative Name) สำหรับใส่ใน TLS certificate ของ API Server
 # ควรใส่เป็น DNS ของ Load Balancer หรือชื่อกลางของ Cluster
-rke2_tls_san: api.rke.dso.local
+rke2_tls_san: wkrke.rke.dso.local
